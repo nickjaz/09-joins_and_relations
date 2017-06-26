@@ -83,7 +83,7 @@ app.put('/articles/:id', function(request, response) {
   // an author_id property, so we can reference it from the request.body.
   // TODO: Add the required values from the request as data for the SQL query to interpolate
   client.query(
-    `UPDATE articles
+    `UPDATE authors
     SET (author, authorUrl)
     VALUES ($1, $2)
     WHERE id=$3;`,
@@ -98,16 +98,17 @@ app.put('/articles/:id', function(request, response) {
     // now have an author_id, in addition to title, category, publishedOn, and body.
     // DONE: Add the required values from the request as data for the SQL query to interpolate
     client.query(
-      `UPDATE authors
+      `UPDATE articles
       SET (author_id, title, category, "publishedOn", body)
       VALUES ($1, $2, $3, $4, $5)
-      WHERE id=$6;`,
+      WHERE article_id=$6;`,
       [
         request.body.author_id,
         request.body.title,
         request.body.category,
         request.body.publishedOn,
-        request.body.body
+        request.body.body,
+        request.params.id
       ]
     )
   })
